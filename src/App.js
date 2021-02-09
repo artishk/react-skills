@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
+
  const App = () => {
  const [showContacts,setShowContacts] = useState([])
  useEffect(() => {
@@ -13,7 +14,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
      setShowContacts(contactsFromServer)
    }
   getContacts()
-  },[])
+  })
 
 //fetch contacts
  const fetchContacts= async()=>{

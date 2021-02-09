@@ -13,17 +13,18 @@ const getContactById=async (id)=>{
   const res=await fetch('http://localhost:9190/getContactsById/' + id)
   const data = await res.json()
   
-  console.log(data);
+   console.log(data);
    setModalShow(true)
    setShowContact(data)
 }
- 
+let contactsToRender; 
+if(contacts){
 
   return (
 
   <div className= "container">
   <ListGroup>
-    {contacts.map((contact,index) => (
+    {contacts.map((contact,index) =>  (
       
       <>
           <ListGroup.Item key={index} action onClick= {()=>getContactById(contact.ID)}>{contact.name}</ListGroup.Item>
@@ -41,6 +42,11 @@ const getContactById=async (id)=>{
   
     </div>
   )
+} else {
+  contactsToRender = "Loading...";
+}
+
+return <div>{contactsToRender}</div>;
 }
 
 

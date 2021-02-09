@@ -1,40 +1,41 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal,Button}from 'react-bootstrap'
 import Card from "react-bootstrap/Card";
-import PropTypes from 'prop-types'
+
 
 // import{useEffect,useState} from 'react'
 
 
 
-const ContactModal = (props)=> {
-  
-
+const ContactModal = ({contact,show,onHide})=> {
+  let contactToRender;
+if(contact){
  return (
 
     <Modal
-    show={props.show}
+    show={show}
     size="lg"
     aria-labelledby="contained-modal-title-vcenter"
     centered
   >
     <Modal.Header closeButton>
       <Modal.Title id="contained-modal-title">
-        {props.contact.name}
-        <h6>{props.contact.company}</h6>
+        {contact.name}
+        <h6>{contact.company}</h6>
       </Modal.Title>
     </Modal.Header>
     <Modal.Body>
     <Card style={{ width: '18rem' }}>
    <Card.Body>
      <div>
-     {props.contact.mobile.map((mob)=>(
+     {
+     contact.mobile.map((mob,index)=>(
        <>
-    <Card.Title>{mob.type}</Card.Title>
-    <Card.Subtitle className="mb-2 text-muted">{mob.value}</Card.Subtitle>
+    <Card.Title key={index}>{mob.type}</Card.Title>
+    <Card.Subtitle key={index+1}className="mb-2 text-muted">{mob.value}</Card.Subtitle>
     </>
      ))}
-   {props.contact.email.map((mailid)=>(
+   {contact.email.map((mailid)=>(
        <>
     <Card.Title>{mailid.type}</Card.Title>
     <Card.Subtitle className="mb-2 text-muted">{mailid.value}</Card.Subtitle>
@@ -45,17 +46,18 @@ const ContactModal = (props)=> {
   </Card>
     </Modal.Body>
     <Modal.Footer>
-      <Button onClick={props.onHide}>Close</Button>
+      <Button onClick={onHide}>Close</Button>
     </Modal.Footer>
   </Modal>
 
   )
+
+}else {
+  contactToRender = "Loading...";
 }
- ContactModal.propTypes={
-   contact:PropTypes.object,
-   onHide:PropTypes.func,
+
+return <div>{contactToRender}</div>;
+}
 
 
- }
-
-export default ContactModal
+ export default ContactModal
