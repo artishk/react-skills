@@ -5,9 +5,8 @@ import {useState} from 'react'
 
 
 const Contacts = ({contacts}) => {
-  const [modalShow, setModalShow] = useState({
-    show:false,
-    contact:{}});
+  const [modalShow, setModalShow] = useState(false);
+  const [showContact,setShowContact] = useState({})
 
 const getContactById=async (id)=>{
   console.log(id);
@@ -15,8 +14,8 @@ const getContactById=async (id)=>{
   const data = await res.json()
   
   console.log(data);
-  await setModalShow(
-    {show:true,data:data})
+   setModalShow(true)
+   setShowContact(data)
 }
  
 
@@ -25,18 +24,20 @@ const getContactById=async (id)=>{
   <div className= "container">
   <ListGroup>
     {contacts.map((contact,index) => (
+      
       <>
           <ListGroup.Item key={index} action onClick= {()=>getContactById(contact.ID)}>{contact.name}</ListGroup.Item>
          
     </>
    
     ))}
-     <ContactModal
-          contact={modalShow}
-          show={modalShow}
-          onHide={() => setModalShow(false)}/>
+    
         
   </ListGroup>
+  <ContactModal
+          contact={showContact}
+          show={modalShow}
+          onHide={() => setModalShow(false)}/>
   
     </div>
   )
