@@ -2,19 +2,30 @@ import './App.css';
 import { useState,useEffect } from 'react'
 import Contacts from './components/Contacts.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Button}from 'react-bootstrap';
+import AddNewContacts from './components/AddNewContacts';
+// import {BrowserRouter as Router,Route} from 'react-router-dom'
+import Header from './components/Header.js';
+import Footer from './components/Footer.js';
+import SearchContacts from './components/SearchContacts'
 
 
+const App = () => {
 
+const[showAddContactForm,setShowAddContactForm]= useState(false)
+const [showContacts,setShowContacts] = useState([])
+const [showSearchContacts,setShowSearchContacts] = useState([])
+let searchString= false;
 
- const App = () => {
- const [showContacts,setShowContacts] = useState([])
  useEffect(() => {
    const getContacts=async ()=>{
      const contactsFromServer = await fetchContacts()
-     setShowContacts(contactsFromServer)
+     await setShowContacts(contactsFromServer)
    }
-  getContacts()
-  })
+   getContacts()
+ 
+  },[showContacts])
+
 
 //fetch contacts
  const fetchContacts= async()=>{
@@ -23,16 +34,51 @@ import 'bootstrap/dist/css/bootstrap.min.css';
  
   return data;
  } 
-  return (
-    <div className="App">
-   <h1>My Contacts</h1>
+
+ const showSearchTerm= (term)=>{
+   console.log(term);
    
-   <Contacts contacts={showContacts}/>
-   
+  searchString=!searchString
+  searchedContacts(term)
   
-  </div>
-  )
-
-
+   
+   
  }
+   
+  const searchedContacts= (term)=>{
+   const contactAfterSearch=showContacts.filter(contact=>
+      contact.name.toLowerCase().includes(term)
+         )
+         
+          
+          setShowSearchContacts(contactAfterSearch)
+         console.log(contactAfterSearch);
+        }   
+
+
+
+ 
+ return (
+
+<div className="App">
+
+  <Button variant={showAddContactForm?"danger":"primary"} onClick={()=>setShowAddContactForm(!showAddContactForm)}>{showAddContactForm?'Close':'Add'}
+     </Button>
+    
+    {showAddContactForm && <AddNewContacts />}
+    <Header/>
+    <div className="ui container">
+    <SearchContacts onChange={showSearchTerm}/>
+    
+    </div>
+
+       {searchString?<Contacts contacts={showSearchContacts}/>:
+       <Contacts contacts={showContacts}/> }
+  
+ 
+
+    <Footer/>
+  </div>
+ 
+)}
 export default App;
